@@ -21,11 +21,10 @@ public class Todo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String description;
-    private LocalDateTime dateOfCreation;
+    private LocalDateTime dateOfCreation = LocalDateTime.now();
     private boolean completed;
 
     public Todo(String description){
         this.description = description;
-        this.dateOfCreation = LocalDateTime.now();
     }
 }

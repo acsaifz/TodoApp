@@ -1,11 +1,10 @@
 package hu.acsaifz.todoapp.controller;
 
+import hu.acsaifz.todoapp.model.dto.TodoCreateDto;
 import hu.acsaifz.todoapp.model.dto.TodoDto;
 import hu.acsaifz.todoapp.service.TodoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,5 +19,9 @@ public class TodoController {
         return todoService.findAll();
     }
 
+    @PostMapping(value = {"", "/"})
+    public TodoDto createTodo(@RequestBody TodoCreateDto todo){
+        return todoService.save(todo);
+    }
 
 }

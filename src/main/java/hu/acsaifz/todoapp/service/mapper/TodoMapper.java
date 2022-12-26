@@ -1,6 +1,7 @@
 package hu.acsaifz.todoapp.service.mapper;
 
 import hu.acsaifz.todoapp.model.Todo;
+import hu.acsaifz.todoapp.model.dto.TodoCreateDto;
 import hu.acsaifz.todoapp.model.dto.TodoDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,4 +18,8 @@ public interface TodoMapper {
     TodoDto toDto(Todo todo);
 
     List<TodoDto> toDto(List<Todo> todos);
+
+    @Mapping(target = "description", source = "dto.description")
+    Todo toTodo(TodoCreateDto dto);
 }
+

@@ -1,6 +1,7 @@
 package hu.acsaifz.todoapp.service;
 
 import hu.acsaifz.todoapp.model.Todo;
+import hu.acsaifz.todoapp.model.dto.TodoCreateDto;
 import hu.acsaifz.todoapp.model.dto.TodoDto;
 import hu.acsaifz.todoapp.repository.TodoRepository;
 import hu.acsaifz.todoapp.service.mapper.TodoMapper;
@@ -20,4 +21,8 @@ public class TodoService {
         return todoMapper.toDto(todos);
     }
 
+    public TodoDto save(TodoCreateDto todoCreateDto) {
+        Todo todo = todoRepository.save(todoMapper.toTodo(todoCreateDto));
+        return todoMapper.toDto(todo);
+    }
 }
