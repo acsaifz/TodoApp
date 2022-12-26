@@ -16,10 +16,6 @@ public class TodoService {
     private final TodoMapper todoMapper;
 
     public List<TodoDto> findAll(){
-        Todo todo = new Todo("Do something");
-        todoRepository.save(todo);
-
-
         List<Todo> todos = todoRepository.findAll();
         return todoMapper.toDto(todos);
     }
