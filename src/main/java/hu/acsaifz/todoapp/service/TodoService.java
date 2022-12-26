@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -23,6 +25,12 @@ public class TodoService {
 
     public TodoDto save(TodoCreateDto todoCreateDto) {
         Todo todo = todoRepository.save(todoMapper.toTodo(todoCreateDto));
+        return todoMapper.toDto(todo);
+    }
+
+    public TodoDto findById(long id) {
+        Optional<Todo> result = todoRepository.findById(id);
+        Todo todo = result.orElseThrow(() -> new NoSuchElementException("Todo not found: " + id));
         return todoMapper.toDto(todo);
     }
 }
