@@ -11,7 +11,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/todos")
+@RequestMapping(value = {"/api/todos"})
 public class TodoController {
     private final TodoService todoService;
 
@@ -35,8 +35,13 @@ public class TodoController {
         return todoService.updateDescriptionById(id, todoUpdate);
     }
 
-    @PutMapping(value = "/{id}/complete")
+    @PutMapping(value = {"/{id}/complete"})
     public TodoDto completeTodo(@PathVariable long id){
         return todoService.completeTodo(id);
+    }
+
+    @DeleteMapping(value = {"/{id}"})
+    public void deleteTodo(@PathVariable long id){
+        todoService.deleteTodo(id);
     }
 }

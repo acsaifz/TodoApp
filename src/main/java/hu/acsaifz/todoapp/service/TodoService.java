@@ -44,4 +44,8 @@ public class TodoService {
         todoRepository.completeTodoById(id);
         return this.findById(id);
     }
+
+    public void deleteTodo(long id) {
+        todoRepository.deleteTodoById(id);
+    }
 }
