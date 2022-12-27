@@ -2,6 +2,7 @@ package hu.acsaifz.todoapp.controller;
 
 import hu.acsaifz.todoapp.model.dto.TodoCreateDto;
 import hu.acsaifz.todoapp.model.dto.TodoDto;
+import hu.acsaifz.todoapp.model.dto.TodoUpdateDto;
 import hu.acsaifz.todoapp.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -29,4 +30,8 @@ public class TodoController {
         return todoService.save(todo);
     }
 
+    @PutMapping(value = {"/{id}"})
+    public TodoDto updateTodo(@PathVariable long id, @RequestBody TodoUpdateDto todoUpdate){
+        return todoService.updateDescriptionById(id, todoUpdate);
+    }
 }

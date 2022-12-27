@@ -3,6 +3,7 @@ package hu.acsaifz.todoapp.service;
 import hu.acsaifz.todoapp.model.Todo;
 import hu.acsaifz.todoapp.model.dto.TodoCreateDto;
 import hu.acsaifz.todoapp.model.dto.TodoDto;
+import hu.acsaifz.todoapp.model.dto.TodoUpdateDto;
 import hu.acsaifz.todoapp.repository.TodoRepository;
 import hu.acsaifz.todoapp.service.mapper.TodoMapper;
 import lombok.RequiredArgsConstructor;
@@ -32,5 +33,10 @@ public class TodoService {
         Optional<Todo> result = todoRepository.findById(id);
         Todo todo = result.orElseThrow(() -> new NoSuchElementException("Todo not found: " + id));
         return todoMapper.toDto(todo);
+    }
+
+    public TodoDto updateDescriptionById(long id, TodoUpdateDto todoUpdateDto) {
+        todoRepository.updateTodoDescriptionById(id, todoUpdateDto.getDescription());
+        return findById(id);
     }
 }
