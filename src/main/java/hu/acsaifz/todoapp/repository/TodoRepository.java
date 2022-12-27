@@ -14,4 +14,8 @@ public interface TodoRepository extends ListCrudRepository<Todo,Long> {
     @Query(value = "update Todo t set t.description = :description where t.id = :id")
     void updateTodoDescriptionById(@Param("id")long id,@Param("description") String description);
 
+    @Modifying
+    @Transactional
+    @Query(value = "update Todo t set t.completed = true where t.id = :id")
+    void completeTodoById(long id);
 }

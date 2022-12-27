@@ -37,6 +37,11 @@ public class TodoService {
 
     public TodoDto updateDescriptionById(long id, TodoUpdateDto todoUpdateDto) {
         todoRepository.updateTodoDescriptionById(id, todoUpdateDto.getDescription());
-        return findById(id);
+        return this.findById(id);
+    }
+
+    public TodoDto completeTodo(long id) {
+        todoRepository.completeTodoById(id);
+        return this.findById(id);
     }
 }
