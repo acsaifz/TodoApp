@@ -4,13 +4,13 @@ import hu.acsaifz.todoapp.model.Todo;
 import hu.acsaifz.todoapp.model.dto.TodoCreateDto;
 import hu.acsaifz.todoapp.model.dto.TodoDto;
 import hu.acsaifz.todoapp.model.dto.TodoUpdateDto;
+import hu.acsaifz.todoapp.model.exceptions.TodoNotFoundException;
 import hu.acsaifz.todoapp.repository.TodoRepository;
 import hu.acsaifz.todoapp.service.mapper.TodoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -31,7 +31,7 @@ public class TodoService {
 
     public TodoDto findById(long id) {
         Optional<Todo> result = todoRepository.findById(id);
-        Todo todo = result.orElseThrow(() -> new NoSuchElementException("Todo not found: " + id));
+        Todo todo = result.orElseThrow(() -> new TodoNotFoundException(id));
         return todoMapper.toDto(todo);
     }
 
@@ -46,6 +46,8 @@ public class TodoService {
     }
 
     public void deleteTodo(long id) {
-        todoRepository.deleteTodoById(id);
+        if (todoRepository.deleteTodoById(id) == 0){
+            throw new TodoNotFoundException(id);
+        }
     }
 }

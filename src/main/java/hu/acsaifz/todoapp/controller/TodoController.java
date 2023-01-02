@@ -5,6 +5,7 @@ import hu.acsaifz.todoapp.model.dto.TodoDto;
 import hu.acsaifz.todoapp.model.dto.TodoUpdateDto;
 import hu.acsaifz.todoapp.service.TodoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class TodoController {
     }
 
     @PostMapping(value = {"", "/"})
+    @ResponseStatus(HttpStatus.CREATED)
     public TodoDto createTodo(@RequestBody TodoCreateDto todo){
         return todoService.save(todo);
     }
@@ -41,6 +43,7 @@ public class TodoController {
     }
 
     @DeleteMapping(value = {"/{id}"})
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTodo(@PathVariable long id){
         todoService.deleteTodo(id);
     }
