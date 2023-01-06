@@ -1,9 +1,6 @@
 package hu.acsaifz.todoapp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +20,9 @@ public class Todo {
     private String description;
     private LocalDateTime dateOfCreation = LocalDateTime.now();
     private boolean completed;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Todo(String description){
         this.description = description;
