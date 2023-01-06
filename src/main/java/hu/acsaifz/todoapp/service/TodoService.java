@@ -1,6 +1,7 @@
 package hu.acsaifz.todoapp.service;
 
 import hu.acsaifz.todoapp.model.Todo;
+import hu.acsaifz.todoapp.model.User;
 import hu.acsaifz.todoapp.model.dto.TodoCreateDto;
 import hu.acsaifz.todoapp.model.dto.TodoDto;
 import hu.acsaifz.todoapp.model.dto.TodoUpdateDto;
@@ -8,7 +9,10 @@ import hu.acsaifz.todoapp.model.exceptions.TodoNotFoundException;
 import hu.acsaifz.todoapp.repository.TodoRepository;
 import hu.acsaifz.todoapp.service.mapper.TodoMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,15 +22,20 @@ import java.util.Optional;
 public class TodoService {
     private final TodoRepository todoRepository;
     private final TodoMapper todoMapper;
+    private final UserService userService;
 
     public List<TodoDto> findAll(){
-        List<Todo> todos = todoRepository.findAll();
+        User user = getCurrentUser();
+        List<Todo> todos = todoRepository.findAllByUser(user);
         return todoMapper.toDto(todos);
     }
 
+    @Transactional
     public TodoDto save(TodoCreateDto todoCreateDto) {
-        Todo todo = todoRepository.save(todoMapper.toTodo(todoCreateDto));
-        return todoMapper.toDto(todo);
+        User user = getCurrentUser();
+        Todo todo = todoMapper.toTodo(todoCreateDto);
+        user.addTodo(todo);
+        return todoMapper.toDto(todoRepository.save(todo));
     }
 
     public TodoDto findById(long id) {
@@ -49,5 +58,10 @@ public class TodoService {
         if (todoRepository.deleteTodoById(id) == 0){
             throw new TodoNotFoundException(id);
         }
+    }
+
+    private User getCurrentUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (User) userService.loadUserByUsername(authentication.getName());
     }
 }

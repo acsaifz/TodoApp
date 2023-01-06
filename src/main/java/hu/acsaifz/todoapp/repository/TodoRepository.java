@@ -1,11 +1,14 @@
 package hu.acsaifz.todoapp.repository;
 
 import hu.acsaifz.todoapp.model.Todo;
+import hu.acsaifz.todoapp.model.User;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 public interface TodoRepository extends ListCrudRepository<Todo,Long> {
 
@@ -23,4 +26,6 @@ public interface TodoRepository extends ListCrudRepository<Todo,Long> {
     @Transactional
     @Query(value = "delete from Todo t  where t.id = :id")
     int deleteTodoById(long id);
+
+    List<Todo> findAllByUser(User user);
 }
