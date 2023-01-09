@@ -24,7 +24,7 @@ public interface TodoRepository extends ListCrudRepository<Todo,Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "delete from Todo t  where t.id = :id")
+    @Query(value = "delete from Todo t where t.id = :id")
     int deleteTodoById(long id);
 
     List<Todo> findAllByUser(User user);
