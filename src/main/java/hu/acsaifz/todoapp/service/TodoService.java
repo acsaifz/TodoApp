@@ -9,8 +9,6 @@ import hu.acsaifz.todoapp.model.exceptions.TodoNotFoundException;
 import hu.acsaifz.todoapp.repository.TodoRepository;
 import hu.acsaifz.todoapp.service.mapper.TodoMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,14 +23,14 @@ public class TodoService {
     private final UserService userService;
 
     public List<TodoDto> findAll(){
-        User user = getCurrentUser();
+        User user = userService.getCurrentUser();
         List<Todo> todos = todoRepository.findAllByUser(user);
         return todoMapper.toDto(todos);
     }
 
     @Transactional
     public TodoDto save(TodoCreateDto todoCreateDto) {
-        User user = getCurrentUser();
+        User user = userService.getCurrentUser();
         Todo todo = todoMapper.toTodo(todoCreateDto);
         user.addTodo(todo);
         return todoMapper.toDto(todoRepository.save(todo));
@@ -58,10 +56,5 @@ public class TodoService {
         if (todoRepository.deleteTodoById(id) == 0){
             throw new TodoNotFoundException(id);
         }
-    }
-
-    private User getCurrentUser(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (User) userService.loadUserByUsername(authentication.getName());
     }
 }
