@@ -3,9 +3,12 @@ package hu.acsaifz.todoapp.service;
 import hu.acsaifz.todoapp.model.User;
 import hu.acsaifz.todoapp.model.dto.UserCreateDto;
 import hu.acsaifz.todoapp.model.dto.UserDto;
+import hu.acsaifz.todoapp.model.dto.UserUpdateDto;
 import hu.acsaifz.todoapp.repository.UserRepository;
 import hu.acsaifz.todoapp.service.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,8 +28,28 @@ public class UserService implements UserDetailsService {
         return userMapper.toDto(userRepository.save(user));
     }
 
+    public UserDto updateUser(UserUpdateDto userDto){
+        User user = getCurrentUser();
+        user = userRepository.save(userMapper.updateUserFromDto(userDto, user));
+        return userMapper.toDto(user);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return findUserByUsername(username);
+    }
+
+    public UserDto getUserByUsername(String username){
+        User user = findUserByUsername(username);
+        return userMapper.toDto(user);
+    }
+
+    private User findUserByUsername(String username){
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
+    }
+
+    private User getCurrentUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return findUserByUsername(authentication.getName());
     }
 }
