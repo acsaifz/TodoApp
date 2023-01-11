@@ -20,17 +20,14 @@ import java.util.Optional;
 public class TodoService {
     private final TodoRepository todoRepository;
     private final TodoMapper todoMapper;
-    private final UserService userService;
 
-    public List<TodoDto> findAll(){
-        User user = userService.getCurrentUser();
+    public List<TodoDto> findAllByUser(User user){
         List<Todo> todos = todoRepository.findAllByUser(user);
         return todoMapper.toDto(todos);
     }
 
     @Transactional
-    public TodoDto save(TodoCreateDto todoCreateDto) {
-        User user = userService.getCurrentUser();
+    public TodoDto save(TodoCreateDto todoCreateDto, User user) {
         Todo todo = todoMapper.toTodo(todoCreateDto);
         user.addTodo(todo);
         return todoMapper.toDto(todoRepository.save(todo));

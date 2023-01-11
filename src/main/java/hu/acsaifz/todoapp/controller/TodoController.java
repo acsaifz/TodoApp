@@ -1,11 +1,13 @@
 package hu.acsaifz.todoapp.controller;
 
+import hu.acsaifz.todoapp.model.User;
 import hu.acsaifz.todoapp.model.dto.TodoCreateDto;
 import hu.acsaifz.todoapp.model.dto.TodoDto;
 import hu.acsaifz.todoapp.model.dto.TodoUpdateDto;
 import hu.acsaifz.todoapp.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +19,9 @@ public class TodoController {
     private final TodoService todoService;
 
     @GetMapping(value = {"", "/"})
-    public List<TodoDto> listTodos(){
-        return todoService.findAll();
+    public List<TodoDto> listTodos(Authentication authentication){
+        User currentUser = (User) authentication.getPrincipal();
+        return todoService.findAllByUser(currentUser);
     }
 
     @GetMapping(value={"/{id}"})
@@ -28,8 +31,9 @@ public class TodoController {
 
     @PostMapping(value = {"", "/"})
     @ResponseStatus(HttpStatus.CREATED)
-    public TodoDto createTodo(@RequestBody TodoCreateDto todo){
-        return todoService.save(todo);
+    public TodoDto createTodo(@RequestBody TodoCreateDto todo, Authentication authentication){
+        User currentUser = (User) authentication.getPrincipal();
+        return todoService.save(todo, currentUser);
     }
 
     @PutMapping(value = {"/{id}"})
