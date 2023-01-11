@@ -34,7 +34,7 @@ public class User implements UserDetails {
     private LocalDateTime registrationDate;
     private String password;
     private boolean enabled = true;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private List<Todo> todos = new ArrayList<>();
 
     public void addTodo(Todo todo){

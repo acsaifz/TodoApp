@@ -57,4 +57,8 @@ public class TodoService {
             throw new TodoNotFoundException(id);
         }
     }
+
+    public void deleteTodosByUserId(long userId){
+        todoRepository.deleteAllByUser_Id(userId);
+    }
 }

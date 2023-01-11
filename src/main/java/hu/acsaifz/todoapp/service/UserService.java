@@ -52,4 +52,8 @@ public class UserService implements UserDetailsService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return findUserByUsername(authentication.getName());
     }
+
+    public void deleteUser(User user) {
+        userRepository.delete(user);
+    }
 }

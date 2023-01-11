@@ -28,4 +28,6 @@ public interface TodoRepository extends ListCrudRepository<Todo,Long> {
     int deleteTodoById(long id);
 
     List<Todo> findAllByUser(User user);
+
+    void deleteAllByUser_Id(long id);
 }
