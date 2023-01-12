@@ -8,7 +8,6 @@ import hu.acsaifz.todoapp.model.dto.TodoDto;
 import hu.acsaifz.todoapp.model.dto.TodoUpdateDto;
 import hu.acsaifz.todoapp.model.exceptions.TodoNotFoundException;
 import hu.acsaifz.todoapp.service.TodoService;
-import org.hibernate.cfg.Environment;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
