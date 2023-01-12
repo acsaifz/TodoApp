@@ -1,16 +1,18 @@
 package hu.acsaifz.todoapp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hu.acsaifz.todoapp.controller.TodoController;
+import hu.acsaifz.todoapp.config.WithMockCustomUser;
 import hu.acsaifz.todoapp.model.User;
 import hu.acsaifz.todoapp.model.dto.TodoCreateDto;
 import hu.acsaifz.todoapp.model.dto.TodoDto;
 import hu.acsaifz.todoapp.model.dto.TodoUpdateDto;
 import hu.acsaifz.todoapp.model.exceptions.TodoNotFoundException;
 import hu.acsaifz.todoapp.service.TodoService;
+import org.hibernate.cfg.Environment;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,18 +29,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = TodoController.class)
-class TodoControllerWebMvcIT {
 
+@SpringBootTest
+@AutoConfigureMockMvc
+class TodoControllerWebMvcIT {
     @MockBean
     TodoService todoService;
 
     @Autowired
     MockMvc mockMvc;
 
-   /*@Test
+    @Test
+    @WithMockCustomUser
     void testListTodos() throws Exception {
-        when(todoService.findAllByUser(new User()))
+        when(todoService.findAllByUser(any(User.class)))
                 .thenReturn(List.of(
                         new TodoDto(1L, "First task", LocalDateTime.of(2023,1,2,9,57),false),
                         new TodoDto(2L, "Second task", LocalDateTime.of(2023,1,2,10,4),false)
@@ -52,6 +56,7 @@ class TodoControllerWebMvcIT {
     }
 
     @Test
+    @WithMockCustomUser
     void testGetTodoById() throws Exception {
         when(todoService.findById(anyLong()))
                 .thenReturn(new TodoDto(1L,"Example task", LocalDateTime.of(2023,1,2,9,57),false));
@@ -63,6 +68,7 @@ class TodoControllerWebMvcIT {
     }
 
     @Test
+    @WithMockCustomUser
     void testGetTodoByIdNotFound() throws Exception {
         when(todoService.findById(anyLong())).thenThrow(new TodoNotFoundException(1L));
 
@@ -72,6 +78,7 @@ class TodoControllerWebMvcIT {
     }
 
     @Test
+    @WithMockCustomUser
     void testCreateTodo() throws Exception {
         when(todoService.save(any(TodoCreateDto.class), any(User.class)))
                 .thenReturn(new TodoDto(1L,"Example task", LocalDateTime.now(),false));
@@ -85,6 +92,7 @@ class TodoControllerWebMvcIT {
     }
 
     @Test
+    @WithMockCustomUser
     void testUpdateTodo() throws Exception {
         when(todoService.updateDescriptionById(anyLong(), any(TodoUpdateDto.class)))
                 .thenReturn(new TodoDto(1L, "Updated task", LocalDateTime.of(2023,1,2,11,0),false));
@@ -99,6 +107,7 @@ class TodoControllerWebMvcIT {
     }
 
     @Test
+    @WithMockCustomUser
     void testUpdateTodoNotFound() throws Exception {
         when(todoService.updateDescriptionById(anyLong(), any(TodoUpdateDto.class)))
                 .thenThrow(new TodoNotFoundException(1L));
@@ -112,6 +121,7 @@ class TodoControllerWebMvcIT {
     }
 
     @Test
+    @WithMockCustomUser
     void testCompleteTodo() throws Exception {
         when(todoService.completeTodo(anyLong()))
                 .thenReturn(new TodoDto(1L, "First todo", LocalDateTime.of(2023,1,2,9,57), true));
@@ -123,6 +133,7 @@ class TodoControllerWebMvcIT {
     }
 
     @Test
+    @WithMockCustomUser
     void testCompleteTodoNotFound() throws Exception {
         when(todoService.completeTodo(anyLong()))
                 .thenThrow(new TodoNotFoundException(1L));
@@ -139,6 +150,6 @@ class TodoControllerWebMvcIT {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }*/
+    }
 
 }
